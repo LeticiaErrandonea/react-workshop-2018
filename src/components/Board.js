@@ -3,13 +3,13 @@ import ListTile from './ListTile';
 import NewList from './NewList';
 
 function Board(props) {
-  const [name, setName] = useState("");
-  const [lists, setLists] = useState([]);
+  const name = useValueState("");
+  const lists = useValueState([]);
 
   useEffect(() => {
     fetch(`/boards/${props.match.params.boardId}`).then(res => res.json()).then((board) => {
-      setLists(board.lists);
-      setName(board.name);
+      lists.handleChange(board.lists);
+      name.handleChange(board.name);
     });
   }, [props.match.params.boardId]);
 
@@ -18,22 +18,35 @@ function Board(props) {
       <div className="Board-content">
         <div className="Board-header">
           <span className="Board-header-btn">
-            {name}
+            {name.value}
           </span>
         </div>
         <div className="Board-canvas">
           <div className="Board-canvas-content">
             {
-              lists.map((list) => {
+              lists.value.map((list) => {
                 return <ListTile key={list.id} id={list.id} name={list.name} boardId={props.match.params.boardId} cards={list.cards}/>
               })
             }
-            <NewList boardId={props.match.params.boardId} onListCreation={(list) => { setLists([...lists, list]) }}/>
+            <NewList boardId={props.match.params.boardId} onListCreation={(list) => { lists.handleChange([...lists.value, list]) }}/>
           </div>
         </div>
       </div>
     </div>
   )
+}
+
+function useValueState(initialValue) {
+  const [value, setValue] = useState(initialValue);
+
+  function handleChange(newValue) {
+    setValue(newValue);
+  }
+
+  return {
+    value,
+    handleChange,
+  }
 }
 
 export default Board;
