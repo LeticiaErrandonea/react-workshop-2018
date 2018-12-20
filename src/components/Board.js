@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ListTile from './ListTile';
 import NewList from './NewList';
 
 function Board(props) {
-  const name = "Meetup JS";
-  const lists = [{ id: 1, name: "Modular CSS", cards: [] }, { id: 2, name: "Login nativescript-vue con Firebase", cards: [] }, { id: 3, name: "React Hooks", cards: [] }]
+  const [name, setName] = useState("Meetup JS");
+  const [lists, setLists] = useState([{ id: 1, name: "Modular CSS", cards: [] }, { id: 2, name: "Login nativescript-vue con Firebase", cards: [] }, { id: 3, name: "React Hooks", cards: [] }]);
 
   return(
     <div className="Board">
@@ -21,7 +21,7 @@ function Board(props) {
                 return <ListTile key={list.id} id={list.id} name={list.name} boardId={props.match.params.boardId} cards={list.cards}/>
               })
             }
-            <NewList boardId={props.match.params.boardId} onListCreation={(list) => { console.log(list); }}/>
+            <NewList boardId={props.match.params.boardId} onListCreation={(list) => { setLists([...lists, list]) }}/>
           </div>
         </div>
       </div>
