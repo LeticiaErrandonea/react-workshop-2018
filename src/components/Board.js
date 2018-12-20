@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListTile from './ListTile';
 import NewList from './NewList';
 
 function Board(props) {
-  const [name, setName] = useState("Meetup JS");
-  const [lists, setLists] = useState([{ id: 1, name: "Modular CSS", cards: [] }, { id: 2, name: "Login nativescript-vue con Firebase", cards: [] }, { id: 3, name: "React Hooks", cards: [] }]);
+  const [name, setName] = useState("");
+  const [lists, setLists] = useState([]);
+
+  useEffect(() => {
+    fetch(`/boards/${props.match.params.boardId}`).then(res => res.json()).then((board) => {
+      setLists(board.lists);
+      setName(board.name);
+    });
+  }, [props.match.params.boardId]);
 
   return(
     <div className="Board">
