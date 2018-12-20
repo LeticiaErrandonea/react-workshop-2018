@@ -1,52 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ListTile from './ListTile';
 import NewList from './NewList';
 
-class Board extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { name: "", lists: [] };
-    this.boardId = this.props.match.params.boardId;
-  }
+function Board(props) {
+  const name = "Meetup JS";
+  const lists = [{ id: 1, name: "Modular CSS", cards: [] }, { id: 2, name: "Login nativescript-vue con Firebase", cards: [] }, { id: 3, name: "React Hooks", cards: [] }]
 
-  componentDidMount() {
-    fetch(`/boards/${this.boardId}`).then(res => res.json()).then((board) => {
-      this.setState({
-        name: board.name,
-        lists: board.lists
-      });
-    });
-  }
-
-  handleAddList(list) {
-    this.setState(prevState => ({
-      lists: [...prevState.lists, list]
-    }));
-  }
-
-  render() {
-    return (
-      <div className="Board">
-        <div className="Board-content">
-          <div className="Board-header">
-            <span className="Board-header-btn">
-              {this.state.name}
-            </span>
-          </div>
-          <div className="Board-canvas">
-            <div className="Board-canvas-content">
-              {
-                this.state.lists.map((list) => {
-                  return <ListTile key={list.id} id={list.id} name={list.name} boardId={this.boardId} cards={list.cards}/>
-                })
-              }
-              <NewList boardId={this.boardId} onListCreation={this.handleAddList.bind(this)}/>
-            </div>
+  return(
+    <div className="Board">
+      <div className="Board-content">
+        <div className="Board-header">
+          <span className="Board-header-btn">
+            {name}
+          </span>
+        </div>
+        <div className="Board-canvas">
+          <div className="Board-canvas-content">
+            {
+              lists.map((list) => {
+                return <ListTile key={list.id} id={list.id} name={list.name} boardId={props.match.params.boardId} cards={list.cards}/>
+              })
+            }
+            <NewList boardId={props.match.params.boardId} onListCreation={(list) => { console.log(list); }}/>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  )
 }
 
 export default Board;
