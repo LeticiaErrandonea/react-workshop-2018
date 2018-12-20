@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ListTile from './ListTile';
 import NewList from './NewList';
+import useValueState from '../customHooks';
 
 function Board(props) {
   const name = useValueState("");
@@ -34,19 +35,6 @@ function Board(props) {
       </div>
     </div>
   )
-}
-
-function useValueState(initialValue) {
-  const [value, setValue] = useState(initialValue);
-
-  function handleChange(newValue) {
-    setValue(newValue);
-  }
-
-  return {
-    value,
-    handleChange,
-  }
 }
 
 export default Board;
