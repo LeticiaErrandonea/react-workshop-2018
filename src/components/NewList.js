@@ -50,7 +50,7 @@ class NewList extends Component {
         { this.state.composing ?
           <div className="NewList-adding-list">
             <form onSubmit={this.handleSubmit}>
-              <input className="NewList-input" type="text" placeholder="Add a list…" autoFocus="true" value={this.state.newListName} onChange={this.newListNameChange}/>
+              <input className="NewList-input" type="text" placeholder="Add a list…" autoFocus={true} value={this.state.newListName} onChange={this.newListNameChange}/>
               <div className="NewList-controls">
                 <input className="NewList-button" type="submit" value="Save"/>
                 <div className="NewList-close" onClick={this.toggleComposing}/>
